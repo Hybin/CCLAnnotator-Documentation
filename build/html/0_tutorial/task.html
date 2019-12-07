@@ -81,11 +81,23 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">文档目录:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">使用指南</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="account.html">1. 用户注册</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2. 任务管理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. 任务管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.1. 标注任务周期描述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">平台管理篇</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">标注人员篇</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.2. 任务注意事项</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">离线标注</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">任务催促</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="annotation.html">3. 标注指南</a></li>
 </ul>
 </li>
@@ -159,6 +171,70 @@
             
   <div class="section" id="id1">
 <h1>2. 任务管理<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>2.1. 标注任务周期描述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>在 <strong>CCLAnnotator</strong> 构式语料标注平台上，任务管理的基本流程为：</p>
+<div class="section" id="id3">
+<h3>平台管理篇<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>平台管理员登录平台，可以选择点击右上角的 <strong>新建任务</strong> 上传构式语料，其支持批量上传：</p>
+<img alt="../_images/create-task.png" src="../_images/create-task.png" />
+<p>构式语料文件上传到服务器之后，平台管理可以向标注人员指派标注任务——点击右上角的 <strong>指派任务</strong> 按钮，即可批量指派任务：</p>
+<img alt="../_images/assign-annotate.png" src="../_images/assign-annotate.png" />
+<p>标注任务指派成功之后，任务列表中的相应任务会出现相应的标注人员：</p>
+<img alt="../_images/after-assign-annotate.png" src="../_images/after-assign-annotate.png" />
+<p>同时，平台管理员具备最高权限，其可以选择 <code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 、 <code class="docutils literal notranslate"><span class="pre">提交</span></code> 文件：<strong>删除</strong> 文件不仅意味着任务取消，与之对应的构式语料文件也会被服务器删除；<strong>更新</strong> 文件则意味着平台管理员可以远程更新语料文件；<strong>提交</strong> 文件则表示平台管理员认定该任务可以进入下一阶段。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p><code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 、 <code class="docutils literal notranslate"><span class="pre">提交</span></code> 均属于不可撤回操作，平台管理员进行相应操作之前，应再三确认。</p>
+</div>
+<p>当标注人员完成语料标注，点击 <strong>提交</strong> 之后，相应的任务会进入下一阶段，即 <strong>校对</strong> 阶段。此时，平台管理员需要向标注人员指派校对任务——点击右上角的 <strong>指派任务</strong> 选择 <code class="docutils literal notranslate"><span class="pre">校正</span></code> ，即可批量指派校对任务：</p>
+<img alt="../_images/assign-proofread.png" src="../_images/assign-proofread.png" />
+<p>校对任务指派成功之后，任务列表中的相应任务会出现相应的校对人员：</p>
+<img alt="../_images/after-assign-proofread.png" src="../_images/after-assign-proofread.png" />
+<p>此外，需要注意的是，任务列表会实时显示 <strong>已指派</strong> 和 <strong>未指派</strong> 任务的数量：</p>
+<img alt="../_images/waiting-proofread.png" src="../_images/waiting-proofread.png" />
+<p>同时，对于已完成校对的任务，平台管理员需要进行审核，审核通过之后，方可进行存档：</p>
+<img alt="../_images/waiting-audit.png" src="../_images/waiting-audit.png" />
+</div>
+<div class="section" id="id4">
+<h3>标注人员篇<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>标注人员的标注和校对权限需平台管理员授权，而后被指派任务后，个人页面上将出现相应的任务列表：</p>
+<img alt="../_images/waiting-task-annotate.png" src="../_images/waiting-task-annotate.png" />
+<p>标注人员可以点击 <strong>标注</strong> 或 <strong>校对</strong> 按钮开展标注或校对任务，此外，标注人员亦可以下载相应的语料文件进行线下标注，标注完成后，点击 <strong>更新</strong> 上传文件；之后，重新进入平台设计的标注区，点击 <strong>SAVE</strong> 即可更新标注/校对进度。</p>
+<p>当标注人员认为自己已经完成标注/校对，则可以点击 <strong>提交</strong> 按钮，使任务进入下一阶段，并等待新的任务指派。</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>2.2. 任务注意事项<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id6">
+<h3>离线标注<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>平台对于语料文件有相对严格的要求，并为之设计了相应的 <code class="docutils literal notranslate"><span class="pre">.xsd</span></code> 文件作语法检查，点击 <a class="reference external" href="http://ccl.pku.edu.cn:8088/CCLAnnotator/public/index.php/construction.xsd">此处</a> 下载，并将其置于语料文件相同的文件夹下。</p>
+</div>
+<p>对于语料文件的基本结构，其描述如下示例：</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;document</span> <span class="na">xmlns=</span><span class="s">&quot;http://ccl.pku.edu.cn&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://ccl.pku.edu.cn construction.xsd&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- ... --&gt;</span>
+    <span class="nt">&lt;sentence</span> <span class="na">annotated=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>text<span class="nt">&lt;cxn</span> <span class="na">type=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;&lt;variable&gt;</span>text<span class="nt">&lt;/variable&gt;&lt;constant&gt;</span>text<span class="nt">&lt;/constant&gt;&lt;/cxn&gt;</span>text<span class="nt">&lt;/sentence&gt;</span>
+    <span class="c">&lt;!-- ... --&gt;</span>
+<span class="nt">&lt;/document&gt;</span>
+</pre></div>
+</div>
+<p>如上所示，一份语料文件包含 <code class="docutils literal notranslate"><span class="pre">&lt;document&gt;</span></code> 作为根节点，其子节点 <code class="docutils literal notranslate"><span class="pre">&lt;sentence&gt;</span></code> 表示一个句子，内部则又包含一个或多个 <code class="docutils literal notranslate"><span class="pre">&lt;cxn&gt;</span></code> 节点表示构式。节点 <code class="docutils literal notranslate"><span class="pre">&lt;cxn&gt;</span></code> 包含 <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> 、 <code class="docutils literal notranslate"><span class="pre">&lt;constant&gt;</span></code> 、 <code class="docutils literal notranslate"><span class="pre">&lt;others&gt;</span></code> 节点，分别表示变项、常项和非构式成分。</p>
+<p>另外，需要注意的是，节点 <code class="docutils literal notranslate"><span class="pre">&lt;sentence&gt;</span></code> 具备属性 <code class="docutils literal notranslate"><span class="pre">annotated</span></code> ，其取值为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1</span></code> ；而节点 <code class="docutils literal notranslate"><span class="pre">&lt;cxn&gt;</span></code> 则具备 <code class="docutils literal notranslate"><span class="pre">type</span></code> 这一基本的属性，其他属性由 <code class="docutils literal notranslate"><span class="pre">type</span></code> 决定。</p>
+</div>
+<div class="section" id="id8">
+<h3>任务催促<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>假如平台管理员认为标注人员进度偏慢，可以通过催促功能发送邮件，对之进行催促：</p>
+<img alt="../_images/notify.png" src="../_images/notify.png" />
+<p>收到催促的标注人员则会收到相应的催促邮件：</p>
+<img alt="../_images/notify-mail.png" src="../_images/notify-mail.png" />
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p><strong>CCLAnnotator</strong> 构式语料标注平台使用的是163邮箱提供的免费SMTP服务，相对不稳定，偶尔会发生邮件发送失败的问题。</p>
+</div>
+</div>
+</div>
 </div>
 
 
