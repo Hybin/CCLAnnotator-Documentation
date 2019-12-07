@@ -81,12 +81,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">文档目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_tutorial/index.html">使用指南</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">后端维护</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="routes.html">1. 路由管理</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2. 用户管理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. 用户管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.1. 用户注册</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.2. 用户登录</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="files.html">3. 文件管理</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dashboard.html">4. 后台管理</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tasks.html">5. 任务管理</a></li>
@@ -163,6 +167,14 @@
             
   <div class="section" id="id1">
 <h1>2. 用户管理<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>针对用户管理系统，其涉及到三个方面：数据库、数据验证和页面呈现。三者刚好对应MVC架构：以模型（Model）操作数据库；以控制器（Controller）管理数据验证；以视图（View）渲染页面。在 Laravel 框架中，用户模型的路径为 <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/app/Models/User.php</span></code> 。<code class="docutils literal notranslate"><span class="pre">User.php</span></code> 设定了数据表名称和相关字段名称。与之相关的数据迁移操作，参看 <a class="reference external" href="https://learnku.com/docs/laravel/5.5/migrations/1329">文档</a>，此处不作赘述。</p>
+<p>用户模型的存在，使开发者能够方便地操作数据库，参数化查询的模式，直接规避了数据库注入和跨站脚本攻击的风险。接下来，看用户注册模块和用户登录模块的设计。</p>
+<div class="section" id="id3">
+<h2>2.1. 用户注册<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+</div>
+<div class="section" id="id4">
+<h2>2.2. 用户登录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+</div>
 </div>
 
 

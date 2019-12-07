@@ -81,7 +81,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">文档目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_tutorial/index.html">使用指南</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">后端维护</a><ul class="current">
@@ -163,6 +163,21 @@
             
   <div class="section" id="id1">
 <h1>1. 路由管理<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>传统的 Web 项目，页面的数量等于页面文件的数量。在 Laravel 中，前端属于单页应用，其本质只存在一个页面文件，即 <code class="docutils literal notranslate"><span class="pre">index.php</span></code> 。然而，Web 项目不可能只有一个页面，因此，需要借助路由（Route）进行页面管理。直观地讲，路由规定了每个页面的URL，并并告知后台使用相应的控制器。</p>
+<p><strong>CCLAnnotator</strong> 项目的路由文件路径为 <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/routes/web.php</span></code> 。每一条路由的基本格式为：</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="nx">Route</span><span class="o">::</span><span class="p">{</span><span class="nx">method</span><span class="p">}(</span><span class="s1">&#39;{path}&#39;</span><span class="p">,</span> <span class="s1">&#39;{controller}@{function}&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;{custom-name}&#39;</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>其中， <code class="docutils literal notranslate"><span class="pre">{method}</span></code> 表示数据传输方式，比如 <code class="docutils literal notranslate"><span class="pre">post</span></code> 、 <code class="docutils literal notranslate"><span class="pre">get</span></code> 、 <code class="docutils literal notranslate"><span class="pre">delete</span></code> 等。此外，Laravel 框架还提供了 <code class="docutils literal notranslate"><span class="pre">resource</span></code> 方法，作为各种数据传输方式的合集，具体参考 <a class="reference external" href="https://learnku.com/docs/laravel/5.5/routing/1293">Laravel 文档</a>，此处不再赘述。</p>
+<p><code class="docutils literal notranslate"><span class="pre">path</span></code> 表示网页的路径，由开发者自己定义； <code class="docutils literal notranslate"><span class="pre">controller</span></code> 则表示控制相关页面的控制器，其名称同样由开发者自定义, 当新建路由时，假若控制器亦存在新建的需要，则命名该控制器后，在项目根文件夹，输入以下命令新建控制器文件：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ php artisan make:controller <span class="o">{</span>controller<span class="o">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">function</span></code> 表示控制器内的方法，用于接收和发送网页数据； <code class="docutils literal notranslate"><span class="pre">{custom-name}</span></code> 表示对该路由的命名，之后开发者可以在页面中使用 <code class="docutils literal notranslate"><span class="pre">route({custom-name})</span></code> 函数使用这一路由。</p>
 </div>
 
 

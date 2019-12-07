@@ -86,7 +86,17 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">使用指南</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="account.html">1. 用户注册</a></li>
 <li class="toctree-l2"><a class="reference internal" href="task.html">2. 任务管理</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3. 标注指南</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. 标注指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.1. 标注工具介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.2. 语料标注指引</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">构式语义标注</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">构式形式标注</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">错误标注处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">标注菜单设置</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../1_backend/index.html">后端维护</a></li>
@@ -159,6 +169,124 @@
             
   <div class="section" id="id1">
 <h1>3. 标注指南<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>3.1. 标注工具介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>在进入正式标注之前，我们首先对标注工具进行简要的介绍。标注工具可以分为三块：工具栏、语料区、菜单区。如下图所示：</p>
+<img alt="../_images/start-annotate.png" src="../_images/start-annotate.png" />
+<dl class="simple">
+<dt>工具栏</dt><dd><p>其中，工具栏处于最上方，分别包含 <code class="docutils literal notranslate"><span class="pre">行距大小</span></code> 、 <code class="docutils literal notranslate"><span class="pre">字体大小</span></code> 、 <code class="docutils literal notranslate"><span class="pre">显示模式</span></code> 、 <code class="docutils literal notranslate"><span class="pre">撤销</span></code> 、 <code class="docutils literal notranslate"><span class="pre">重做</span></code> 等功能。标注人员能够点击并作相应调整。</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p><strong>显示模式</strong> 分为可视化模式与源代码模式，用户能够随个人喜好自行切换。需要注意的是，可视化模式与源代码模式互不兼容：可视化模式针对语料标注主要依赖于鼠标操作；而源代码模式则要求直接修改 <code class="docutils literal notranslate"><span class="pre">.xml</span></code> 源代码。标注人员以源代码模式标注语料时，需小心谨慎，重点关注相应 <code class="docutils literal notranslate"><span class="pre">xml</span></code> 的标签及其格式。</p>
+</div>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">撤销</span></code> 、 <code class="docutils literal notranslate"><span class="pre">重做</span></code> 其并非 <strong>CCLAnnotator</strong> 平台原生功能，而是移植了开源代码。需要注意的是，二者的生效条件在于标注人员已经对语料进行了一定的标注操作。</p>
+<p>此外， <strong>CCLAnnotator</strong> 平台采用异步保存的方式，允许标注人员在标注或校对过程中，实时保存文件，即点击 <strong>SAVE</strong> 按钮。
+点击 <strong>SAVE</strong> 按钮，服务器会对标注内容进行自动排序，将构式实例内容一致的句子收拢到一起，并按频次进行升序排列。</p>
+<dl class="simple">
+<dt>语料区</dt><dd><p>待标注/校对语料处于工具栏之下、菜单区之左的区域。当标注人员进行标注任务时，每一个句子左端均具备一个删除按钮，用于删除不合适的语料；而当标注人员进行校对任务时，每一个句子左端均具备一个勾选按钮，用于确认已校对的状态；同时，平台管理员进行任务审核时，审核界面与校对界面是一致的。</p>
+</dd>
+<dt>菜单区</dt><dd><p>右侧菜单区显示的是相应的标注选项，包括构式语义和构式形式标注两大类。构式语义模块包含构式类型及其所具备的相应属性，比如 <code class="docutils literal notranslate"><span class="pre">主观情感类</span></code> 构式具备 <code class="docutils literal notranslate"><span class="pre">评价</span></code> 、 <code class="docutils literal notranslate"><span class="pre">立场</span></code> 、 <code class="docutils literal notranslate"><span class="pre">情感</span></code> 、 <code class="docutils literal notranslate"><span class="pre">强度</span></code> 四大属性；对于构式形式模块，其包括构式成分标注，即 <code class="docutils literal notranslate"><span class="pre">常项</span></code> 、 <code class="docutils literal notranslate"><span class="pre">变项</span></code> 、 <code class="docutils literal notranslate"><span class="pre">其他</span></code>。需要注意的是，<code class="docutils literal notranslate"><span class="pre">其他</span></code> 并非构式成分，但在具体的语言使用中，构式内部很有可能出现不属于构式的成分，因此，在工程层面，我们使用 <code class="docutils literal notranslate"><span class="pre">其他</span></code> 将之与真正的构式成分相区分。</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id3">
+<h2>3.2. 语料标注指引<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>为了节省标注成本，我们在开发 <strong>CCLAnnotator</strong> 构式语料标注平台的同时，设计了一套现代汉语构式形式自动标注算法，其能够粗略地从生语料中标注明显的构式实例，因此，标注人员接到的标注任务，往往即包含未经标注的生语料，也包含经过了粗标的语料。对于后者，标注人员不仅需要检查其形式标注的正确性，同时也要为其标注构式语义。</p>
+<div class="section" id="id4">
+<h3>构式语义标注<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>对于 <strong>未经标注</strong> 的句子，标注人员需要用鼠标 <strong>选中</strong> 相应区域，此时，右侧菜单会出现选中的文字，标注人员需要确定其构式类型：</p>
+<img alt="../_images/annotate-meaning.png" src="../_images/annotate-meaning.png" />
+<p>如图所示，当标注人员选择构式类型为 <code class="docutils literal notranslate"><span class="pre">主观情感类</span></code> ，构式标注菜单会出现相应的属性，标注人员需要就各个属性选择相应的值，允许缺省值的存在。一旦确定取值之后，点击 <strong>SUBMIT</strong> ，构式语义就标注好了，同时构式实例也被确定了。</p>
+<img alt="../_images/annotate-meaning-success.png" src="../_images/annotate-meaning-success.png" />
+<p>对于 <strong>自动标注</strong> 过的句子，标注人员只需用鼠标 <strong>单击</strong> 该构式实例内部的任意区域，此时，标注人员只需在右侧菜单区进行上述构式语义标注操作即可。</p>
+</div>
+<div class="section" id="id5">
+<h3>构式形式标注<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>对于 <strong>未经标注</strong> 的句子，当其构式语义已被标注，构式实例亦已确定，接下来便需要标注人员进行构式形式标注：在构式实例内部，用鼠标 <strong>选中</strong> 片段，此时右侧菜单区会出现构式形式标注选项：</p>
+<img alt="../_images/annotate-form.png" src="../_images/annotate-form.png" />
+<p>而后点选相应的构式形式属性，并 <strong>SUBMIT</strong> 即可。</p>
+<img alt="../_images/annotate-form-success.png" src="../_images/annotate-form-success.png" />
+</div>
+<div class="section" id="id6">
+<h3>错误标注处理<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>对于标注错误， <strong>CCLAnnotator</strong> 构式语料标注平台亦提供了十分高效的处理工具。标注人员使用鼠标 <strong>单击</strong> 错误标注的构式实例，在相应实例上方会出现 <code class="docutils literal notranslate"><span class="pre">删除</span></code> 和 <code class="docutils literal notranslate"><span class="pre">修改</span></code> 按钮：</p>
+<img alt="../_images/annotate-re-edit.png" src="../_images/annotate-re-edit.png" />
+<p>标注人员点击黑色 <code class="docutils literal notranslate"><span class="pre">删除</span></code> 按钮，则删除当前构式实例 <strong>整体</strong> 的标注信息；点击白色 <code class="docutils literal notranslate"><span class="pre">修改</span></code> 按钮，则删除当前构式实例 <strong>内部成分</strong> 的标注信息。而后，标注人员可以按照上述构式语义和构式形式标注流程进行操作。</p>
+</div>
+<div class="section" id="id7">
+<h3>标注菜单设置<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>对于现代汉语来说，显然不止一种 <code class="docutils literal notranslate"><span class="pre">主观情感类</span></code> 构式。随着标注规范愈加完善，构式标注菜单亦会愈加丰富。因此， <strong>CCLAnnotator</strong> 构式语料标注平台为平台管理员提供了开放的接口，其可以在管理后台对构式菜单进行扩展。</p>
+<img alt="../_images/menu-setting.png" src="../_images/menu-setting.png" />
+<p>点击 <code class="docutils literal notranslate"><span class="pre">+</span></code> 号，平台管理员输入相应的值并提交，即可完成对标注菜单的扩展；同时，点击 <strong>管理</strong> 按钮，能够删除不合适的菜单选项。</p>
+<p>标注菜单在后端以配置文件的形式呈现，其路径为 <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/config/constructions.php</span></code>。平台管理员在管理后台的操作最终会反馈到该文件中。其基本形式如下：</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+
+<span class="k">return</span> <span class="p">[</span>
+    <span class="s1">&#39;form&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">&#39;构式成分&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;components&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;radio&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="s1">&#39;variable&#39;</span><span class="p">,</span> <span class="s1">&#39;others&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;常项&#39;</span><span class="p">,</span> <span class="s1">&#39;变项&#39;</span><span class="p">,</span> <span class="s1">&#39;其他&#39;</span><span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+
+    <span class="s1">&#39;meaning&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">&#39;type&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;types&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;select&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span> <span class="s1">&#39;主观情感类构式&#39;</span><span class="p">,</span> <span class="p">],</span>
+            <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span> <span class="s1">&#39;主观情感类构式&#39;</span><span class="p">,</span> <span class="p">],</span>
+        <span class="p">],</span>
+
+        <span class="s1">&#39;elements&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">&#39;主观情感类构式&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                <span class="s1">&#39;评价&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;evaluation&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;radio&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">,</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="s1">&#39;neutral&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span> <span class="s1">&#39;正面&#39;</span><span class="p">,</span> <span class="s1">&#39;负面&#39;</span><span class="p">,</span> <span class="s1">&#39;中立&#39;</span><span class="p">],</span>
+                <span class="p">],</span>
+
+                <span class="s1">&#39;立场&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;standpoint&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;radio&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;accept&#39;</span><span class="p">,</span> <span class="s1">&#39;reject&#39;</span><span class="p">,</span> <span class="s1">&#39;whatever&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span> <span class="s1">&#39;接受&#39;</span><span class="p">,</span> <span class="s1">&#39;拒绝&#39;</span><span class="p">,</span> <span class="s1">&#39;不置可否&#39;</span><span class="p">],</span>
+                <span class="p">],</span>
+
+                <span class="s1">&#39;情感&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;emotion&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;select&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;anger&#39;</span><span class="p">,</span> <span class="s1">&#39;sad&#39;</span><span class="p">,</span> <span class="s1">&#39;terrify&#39;</span><span class="p">,</span> <span class="s1">&#39;hate&#39;</span><span class="p">,</span> <span class="s1">&#39;admire&#39;</span><span class="p">,</span> <span class="s1">&#39;custom&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span><span class="s1">&#39;喜欢&#39;</span><span class="p">,</span> <span class="s1">&#39;愤怒&#39;</span><span class="p">,</span> <span class="s1">&#39;悲伤&#39;</span><span class="p">,</span> <span class="s1">&#39;恐惧&#39;</span><span class="p">,</span> <span class="s1">&#39;厌恶&#39;</span><span class="p">,</span> <span class="s1">&#39;爱慕&#39;</span><span class="p">,</span> <span class="s1">&#39;自定义&#39;</span><span class="p">],</span>
+                <span class="p">],</span>
+
+                <span class="s1">&#39;强度&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">&#39;mark&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;intensity&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;view&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;radio&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;extreme&#39;</span><span class="p">,</span> <span class="s1">&#39;very&#39;</span><span class="p">,</span> <span class="s1">&#39;not-very&#39;</span><span class="p">],</span>
+                    <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">&#39;缺省&#39;</span><span class="p">,</span><span class="s1">&#39;极&#39;</span><span class="p">,</span> <span class="s1">&#39;很&#39;</span><span class="p">,</span> <span class="s1">&#39;不很&#39;</span><span class="p">],</span>
+                <span class="p">],</span>
+            <span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>其中，对构式类型，我们建议其 <code class="docutils literal notranslate"><span class="pre">name</span></code> 和 <code class="docutils literal notranslate"><span class="pre">content</span></code> 字段均保持中文同形，而对于其他属性， <code class="docutils literal notranslate"><span class="pre">name</span></code> 和 <code class="docutils literal notranslate"><span class="pre">content</span></code> 字段分别使用英文和中文命名。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>为了防止前端渲染出错，请平台管理人员严格遵守上述约定。</p>
+</div>
+<p>另外，菜单区各类特征的操作方式，存在两种方式备选：<code class="docutils literal notranslate"><span class="pre">radio</span></code> 和 <code class="docutils literal notranslate"><span class="pre">select</span></code> 。当特征取值数量较少时，推荐使用 <code class="docutils literal notranslate"><span class="pre">radio</span></code> ，反之，则推荐使用 <code class="docutils literal notranslate"><span class="pre">select</span></code> 。</p>
+<p>当然，平台管理人员亦可以直接修改配置文件，并上传到服务器相应路径。</p>
+</div>
+</div>
 </div>
 
 
