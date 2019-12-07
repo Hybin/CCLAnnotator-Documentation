@@ -1,8 +1,8 @@
 后端维护
 ===============
 
-**CCLAnnotator** 项目后端采用`Laravel<https://laravel.com/>`_构建，因此，\
-针对 **CCLAnnotator** 项目后端维护，亦从``MVC``架构展开，即模型（Model）、视图（View）和控制器（Controller）。\
+**CCLAnnotator** 项目后端采用 `Laravel <https://laravel.com/>`_ 构建，因此，\
+针对 **CCLAnnotator** 项目后端维护，亦从 ``MVC`` 架构展开，即模型（Model）、视图（View）和控制器（Controller）。\
 具体如下：
 
 

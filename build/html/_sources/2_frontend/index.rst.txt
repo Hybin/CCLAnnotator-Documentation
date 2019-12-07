@@ -1,0 +1,14 @@
+前端维护
+=================
+
+**CCLAnnotator** 项目前端主要采用 `jQuery <https://jquery.com/>`_ 框架，用于处理相对复杂的标注操作，同时，\
+考虑到模块化需求，方便对代码进行管理，采用 **CommonJS** 进行模块化，同时，使用 **Webpack** 进行打包。具体如下：
+
+
+.. toctree::
+   :maxdepth: 2
+   :numbered: 2
+
+   require
+   ajax
+   render

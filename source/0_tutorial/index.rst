@@ -2,13 +2,13 @@
 ==============
 
 **CCLAnnotator** 项目针对现代汉语构式（construction）语料标注而开发，专注为构式研究者提供高效而友好的可视化语料\
-标注工具。接下来，我们将细致地介绍**CCLAnnotator**构式语料标注平台的使用方法。
+标注工具。接下来，我们将细致地介绍 **CCLAnnotator** 构式语料标注平台的使用方法。
 
 
 .. toctree::
    :maxdepth: 2
    :numbered: 2
 
-   01_account
-   02_task
-   03_annotation
+   account
+   task
+   annotation
