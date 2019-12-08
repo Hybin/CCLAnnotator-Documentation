@@ -122,9 +122,10 @@
    :param String: $new 待加入的标注语料文件路径
    :param String: 句子节点，默认为 ``sentence``
 
-.. function:: sort($path)
+.. function:: sort($path, $task)
    :module: StoreFilesController
 
    静态函数，对标注文件内容进行分类排序，收拢具备相同的构式内容的句子，并按构式频次进行升序排列
 
-   :param String: $path 待排序文件路径   
+   :param String: $path 待排序文件路径
+   :param String: $task 待排序文件名称   

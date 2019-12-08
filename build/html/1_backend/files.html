@@ -90,8 +90,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">3. 文件管理</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dashboard.html">4. 后台管理</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tasks.html">5. 任务管理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="annotation.html">6. 标注管理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authority.html">7. 权限管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authority.html">6. 权限管理</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../2_frontend/index.html">前端维护</a></li>
@@ -326,11 +325,14 @@
 
 <dl class="function">
 <dt id="StoreFilesController.sort">
-<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">sort</code><span class="sig-paren">(</span><em class="sig-param">$path</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.sort" title="永久链接至目标">¶</a></dt>
+<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">sort</code><span class="sig-paren">(</span><em class="sig-param">$path</em>, <em class="sig-param">$task</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.sort" title="永久链接至目标">¶</a></dt>
 <dd><p>静态函数，对标注文件内容进行分类排序，收拢具备相同的构式内容的句子，并按构式频次进行升序排列</p>
 <dl class="field-list simple">
 <dt class="field-odd">参数</dt>
-<dd class="field-odd"><p><strong>String</strong> – $path 待排序文件路径</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>String</strong> – $path 待排序文件路径</p></li>
+<li><p><strong>String</strong> – $task 待排序文件名称</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
