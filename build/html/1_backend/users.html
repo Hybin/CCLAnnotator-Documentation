@@ -171,9 +171,151 @@
 <p>用户模型的存在，使开发者能够方便地操作数据库，参数化查询的模式，直接规避了数据库注入和跨站脚本攻击的风险。接下来，看用户注册模块和用户登录模块的设计。</p>
 <div class="section" id="id3">
 <h2>2.1. 用户注册<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>对于用户注册模块，其路由设计如下：</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">,</span> <span class="s1">&#39;UsersController@create&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">resource</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;UsersController&#39;</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>对于 <code class="docutils literal notranslate"><span class="pre">signup</span></code> ，其为用户注册页面设计相应的URL路径，即 <code class="docutils literal notranslate"><span class="pre">/signup</span></code> ，并由控制器 <code class="docutils literal notranslate"><span class="pre">UsersController</span></code> 向浏览器响应视图。控制器 <code class="docutils literal notranslate"><span class="pre">UsersController</span></code> 的路径为 <code class="docutils literal notranslate"><span class="pre">CCLAnnotator/app/Http/UsersController.php</span></code> ； <code class="docutils literal notranslate"><span class="pre">resource</span></code> 方法相当于多条路由的合集，比如：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 26%" />
+<col style="width: 22%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Method</strong></p></td>
+<td><p><strong>URI</strong></p></td>
+<td><p><strong>Route</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/users</p></td>
+<td><p>index</p></td>
+<td><p>users.index</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/users/create</p></td>
+<td><p>create</p></td>
+<td><p>users.create</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p>/users</p></td>
+<td><p>store</p></td>
+<td><p>users.store</p></td>
+</tr>
+<tr class="row-odd"><td><p>GET</p></td>
+<td><p>/users/{user}</p></td>
+<td><p>show</p></td>
+<td><p>users.show</p></td>
+</tr>
+<tr class="row-even"><td><p>GET</p></td>
+<td><p>/users/{user}/edit</p></td>
+<td><p>edit</p></td>
+<td><p>users.edit</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUT/PATCH</p></td>
+<td><p>/users/{user}</p></td>
+<td><p>update</p></td>
+<td><p>users.update</p></td>
+</tr>
+<tr class="row-even"><td><p>DELETE</p></td>
+<td><p>/users/{user}</p></td>
+<td><p>destroy</p></td>
+<td><p>users.destroy</p></td>
+</tr>
+</tbody>
+</table>
+<p>当然，在 <strong>CCLAnnotator</strong> 项目中，用户管理系统并未用到全部路由，具体如下：</p>
+<dl class="function">
+<dt id="UsersController.create">
+<code class="sig-prename descclassname">UsersController.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UsersController.create" title="永久链接至目标">¶</a></dt>
+<dd><p>返回用户注册视图</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="UsersController.store">
+<code class="sig-prename descclassname">UsersController.</code><code class="sig-name descname">store</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UsersController.store" title="永久链接至目标">¶</a></dt>
+<dd><p>保存用户注册数据，并直接登录</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>view</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UsersController.index">
+<code class="sig-prename descclassname">UsersController.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UsersController.index" title="永久链接至目标">¶</a></dt>
+<dd><p>返回注册用户列表视图</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="UsersController.update">
+<code class="sig-prename descclassname">UsersController.</code><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em>, <em class="sig-param">User $user</em><span class="sig-paren">)</span><a class="headerlink" href="#UsersController.update" title="永久链接至目标">¶</a></dt>
+<dd><p>授权新注册用户成为标注人员</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p></li>
+<li><p><strong>User</strong> – $user 待授权用户实例</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UsersController.show">
+<code class="sig-prename descclassname">UsersController.</code><code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param">User $user</em><span class="sig-paren">)</span><a class="headerlink" href="#UsersController.show" title="永久链接至目标">¶</a></dt>
+<dd><p>返回个人页面</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>User</strong> – $user 特定用户实例</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id4">
 <h2>2.2. 用户登录<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>对于用户登录模块，其路由设计如下：</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;SessionsController@create&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;SessionsController@store&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">,</span> <span class="s1">&#39;SessionsController@destroy&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>同样，对于控制器 <code class="docutils literal notranslate"><span class="pre">SessionsController</span></code> ，其路径为 <code class="docutils literal notranslate"><span class="pre">CCLAnnotator/app/Http/SessionsController.php</span></code> ，内部函数介绍如下：</p>
+<dl class="function">
+<dt id="SessionsController.create">
+<code class="sig-prename descclassname">SessionsController.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SessionsController.create" title="永久链接至目标">¶</a></dt>
+<dd><p>返回用户登录视图</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SessionsController.store">
+<code class="sig-prename descclassname">SessionsController.</code><code class="sig-name descname">store</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#SessionsController.store" title="永久链接至目标">¶</a></dt>
+<dd><p>验证用户登录信息，并返回相应视图</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="SessionsController.destroy">
+<code class="sig-prename descclassname">SessionsController.</code><code class="sig-name descname">destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SessionsController.destroy" title="永久链接至目标">¶</a></dt>
+<dd><p>清除用户登录信息，并返回相应视图</p>
+</dd></dl>
+
 </div>
 </div>
 

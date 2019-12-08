@@ -81,7 +81,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">文档目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_tutorial/index.html">使用指南</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">后端维护</a><ul class="current">
@@ -163,6 +163,178 @@
             
   <div class="section" id="id1">
 <h1>3. 文件管理<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p><strong>CCLAnnotator</strong> 构式语料标注平台最重要的模块之一就是语料文件管理。对于文件系统，Laravel 提供了完善的 <code class="docutils literal notranslate"><span class="pre">File</span></code> 模块和 <code class="docutils literal notranslate"><span class="pre">Storage</span></code> 模块，开发者能够方便地调用相关函数进行文件管理。使用 <code class="docutils literal notranslate"><span class="pre">File</span></code> 模块，需要提供文件的绝对路径；而 <code class="docutils literal notranslate"><span class="pre">Storage</span></code> 模块则可以直接定位到存储文件，开发者仅需提供相对路径，比如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Storage</span><span class="p">::</span><span class="n">disk</span><span class="p">(</span><span class="s1">&#39;local&#39;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">app</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>依照 Laravel 默认的文件系统配置，<strong>CCLAnnotator</strong> 平台选择服务器磁盘作为存储空间，因此，语料文件存储路径为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">CCLAnnotator</span><span class="o">/</span><span class="n">storage</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">public</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>在该文件夹下，我们创建了 <code class="docutils literal notranslate"><span class="pre">/constructions/materials/</span></code> 文件夹和 <code class="docutils literal notranslate"><span class="pre">/constructions/corpora/</span></code> 文件夹，分别用于存储生语料和标注语料。当标注任务进入存档阶段，语料文件会从 <code class="docutils literal notranslate"><span class="pre">/constructions/materials/</span></code> 移入 <code class="docutils literal notranslate"><span class="pre">/constructions/corpora/</span></code> 。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>标注完毕的语料文件将以其构式形式在现代汉语构式知识库中的ID为文件名进行保存。</p>
+</div>
+<p>因此，对于生语料，我们期待的文件命名方式是 <code class="docutils literal notranslate"><span class="pre">日期_构式形式_构式ID.xml</span></code> ，既保证该文件在 <code class="docutils literal notranslate"><span class="pre">/constructions/materials/</span></code> 文件夹中的独一性，避免数据覆盖；也能使同一构式的不同实例语料能够正确地存档。</p>
+<p><strong>CCLAnnotator</strong> 平台对于文件的操作包括上传文件、更新文件、删除文件以及语料标注过程的保存操作，其路由设计如下：</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;files/upload&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@store&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.store&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;files/update&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@update&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.update&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;files/verify&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@verify&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.verify&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;files/download/{file}&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@download&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.download&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;files/commit&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@commit&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.commit&#39;</span><span class="p">);</span>
+<span class="nx">Route</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;files/destroy&#39;</span><span class="p">,</span> <span class="s1">&#39;UploadedFilesController@destroy&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">(</span><span class="s1">&#39;files.destroy&#39;</span><span class="p">);</span>
+
+<span class="nx">Route</span><span class="o">::</span><span class="na">resource</span><span class="p">(</span><span class="s1">&#39;corpora&#39;</span><span class="p">,</span> <span class="s1">&#39;StoreFilesController&#39;</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>由上可知，文件管理系统涉及到两个控制器： <code class="docutils literal notranslate"><span class="pre">UploadedFilesController</span></code> 和 <code class="docutils literal notranslate"><span class="pre">StoreFilesController</span></code> 。下面分别介绍其相关方法：</p>
+<dl class="function">
+<dt id="UploadedFilesController.store">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">store</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.store" title="永久链接至目标">¶</a></dt>
+<dd><p>上传文件，保存文件到``/constructions/materials/`` 文件夹，并更新数据库信息，返回后台操作视图</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.update">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.update" title="永久链接至目标">¶</a></dt>
+<dd><p>更新文件，并更新数据库信息，返回后台操作视图</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.verify">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">verify</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.verify" title="永久链接至目标">¶</a></dt>
+<dd><p>文件下载确认，返回确认信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.download">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">$file</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.download" title="永久链接至目标">¶</a></dt>
+<dd><p>下载文件</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>String</strong> – $file 待下载文件名</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.commit">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">commit</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.commit" title="永久链接至目标">¶</a></dt>
+<dd><p>提交文件，更新任务状态，更新文件内容，返回提交处理信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.destroy">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">destroy</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.destroy" title="永久链接至目标">¶</a></dt>
+<dd><p>删除文件，返回删除处理信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="UploadedFilesController.clear">
+<code class="sig-prename descclassname">UploadedFilesController.</code><code class="sig-name descname">clear</code><span class="sig-paren">(</span><em class="sig-param">$path</em><span class="sig-paren">)</span><a class="headerlink" href="#UploadedFilesController.clear" title="永久链接至目标">¶</a></dt>
+<dd><p>当标注任务状态改变时，与之对应的文件应清除标注标记信息(‘annotated’)，并更新文件</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>String</strong> – $path 文件路径</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>显然，控制器 <code class="docutils literal notranslate"><span class="pre">UploadedFilesController</span></code> 是对文件本身的操作，与之相对，控制器 <code class="docutils literal notranslate"><span class="pre">StoreFilesController</span></code> 对文件流内容进行操作：</p>
+<dl class="function">
+<dt id="StoreFilesController.store">
+<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">store</code><span class="sig-paren">(</span><em class="sig-param">Request $request</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.store" title="永久链接至目标">¶</a></dt>
+<dd><p>保存标注内容到文件，并返回保存状态信息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>Request</strong> – $request 收到客户端发来的HTTP请求</p>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="StoreFilesController.loadData">
+<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">loadData</code><span class="sig-paren">(</span><em class="sig-param">$path</em>, <em class="sig-param">$node</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.loadData" title="永久链接至目标">¶</a></dt>
+<dd><p>静态函数，加载指定节点的XML文件内容并返回</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>String</strong> – $path <code class="docutils literal notranslate"><span class="pre">.xml</span></code> 文件路径</p></li>
+<li><p><strong>String</strong> – $node <code class="docutils literal notranslate"><span class="pre">.xml</span></code> 文件节点</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>Array&lt;XMLElement&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="StoreFilesController.mergeXML">
+<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">mergeXML</code><span class="sig-paren">(</span><em class="sig-param">$old</em>, <em class="sig-param">$new</em>, <em class="sig-param">$node</em>, <em class="sig-param">$construction</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.mergeXML" title="永久链接至目标">¶</a></dt>
+<dd><p>静态函数，将新的标注内容添加到已存档的标注语料文件</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>String</strong> – $old 已存档的标注语料文件路径</p></li>
+<li><p><strong>String</strong> – $new 待加入的标注语料文件路径</p></li>
+<li><p><strong>String</strong> – 句子节点，默认为 <code class="docutils literal notranslate"><span class="pre">sentence</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="StoreFilesController.sort">
+<code class="sig-prename descclassname">StoreFilesController.</code><code class="sig-name descname">sort</code><span class="sig-paren">(</span><em class="sig-param">$path</em><span class="sig-paren">)</span><a class="headerlink" href="#StoreFilesController.sort" title="永久链接至目标">¶</a></dt>
+<dd><p>静态函数，对标注文件内容进行分类排序，收拢具备相同的构式内容的句子，并按构式频次进行升序排列</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><p><strong>String</strong> – $path 待排序文件路径</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

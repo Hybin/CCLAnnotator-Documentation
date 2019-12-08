@@ -64,7 +64,7 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
-   平台对于语料文件有相对严格的要求，并为之设计了相应的 ``.xsd`` 文件作语法检查，点击 `此处 <http://ccl.pku.edu.cn:8088/CCLAnnotator/public/index.php/construction.xsd>`_ 下载，并将其置于\
+   平台对于语料文件有相对严格的要求，并为之设计了相应的 ``.xsd`` 文件作语法检查，点击 `此处 <http://ccl.pku.edu.cn:8088/CCLAnnotator/public/construction.xsd>`_ 下载，并将其置于\
    语料文件相同的文件夹下。
 
 对于语料文件的基本结构，其描述如下示例：

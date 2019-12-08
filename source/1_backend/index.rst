@@ -15,5 +15,4 @@
    files
    dashboard
    tasks
-   annotation
    authority

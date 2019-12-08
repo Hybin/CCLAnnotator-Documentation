@@ -37,7 +37,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="1. 文件引用" href="require.html" />
-    <link rel="prev" title="7. 权限管理" href="../1_backend/authority.html" /> 
+    <link rel="prev" title="6. 权限管理" href="../1_backend/authority.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,7 +81,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">文档目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../0_tutorial/index.html">使用指南</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../1_backend/index.html">后端维护</a></li>
@@ -157,7 +157,14 @@
             
   <div class="section" id="id1">
 <h1>前端维护<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<p><strong>CCLAnnotator</strong> 项目前端主要采用 <a class="reference external" href="https://jquery.com/">jQuery</a> 框架，用于处理相对复杂的标注操作，同时，考虑到模块化需求，方便对代码进行管理，采用 <strong>CommonJS</strong> 进行模块化，同时，使用 <strong>Webpack</strong> 进行打包。具体如下：</p>
+<p><strong>CCLAnnotator</strong> 项目前端主要采用 <a class="reference external" href="https://jquery.com/">jQuery</a> 框架，用于处理相对复杂的标注操作，同时，考虑到模块化需求，方便对代码进行管理，采用 <strong>CommonJS</strong> 进行模块化，同时，使用 <strong>Webpack</strong> 进行打包。</p>
+<p>对于HTML文件的渲染，我们直接采用了 Laravel 框架提供的 <code class="docutils literal notranslate"><span class="pre">Blade</span></code> 语法。前面我们比较细致地介绍了MVC架构中的Model和Controller，接下来，我们介绍一下View。一般来说，View 文件的路径为  <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/resources/views/</span></code> ，我们可以在文件夹下创建自己的文件夹，并在文件夹下创建 <code class="docutils literal notranslate"><span class="pre">blade.php</span></code> 文件。在控制器中，调用视图的函数为 <code class="docutils literal notranslate"><span class="pre">view('{custom_dir}.{custom_blade}')</span></code> 。基于路由变化，控制器返回指定的视图。网站页面不再依赖于多个页面文件。具体的 <code class="docutils literal notranslate"><span class="pre">Blade</span></code> 语法参看文档，此处不再作赘述。</p>
+<p>Laravel 的前端文件存储在 <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/resources/assets/</span></code> 下，包括JavaScript文件和SCSS文件。后者是CSS的扩展集，比之CSS更为灵活和强大，具体语言特性请开发者自行学习。考虑到模块化需求，我们使用 <strong>Webpack</strong> 对JS和SCSS资源进行打包，最终输出到 <code class="docutils literal notranslate"><span class="pre">/CCLAnnotator/public/</span></code> 文件夹下。开发者修改完毕相关代码，需要运行下述命令进行打包：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ npm run dev
+$ <span class="c1">#or</span>
+$ npm run watch-poll
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="require.html">1. 文件引用</a></li>
@@ -178,7 +185,7 @@
         <a href="require.html" class="btn btn-neutral float-right" title="1. 文件引用" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../1_backend/authority.html" class="btn btn-neutral float-left" title="7. 权限管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../1_backend/authority.html" class="btn btn-neutral float-left" title="6. 权限管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
