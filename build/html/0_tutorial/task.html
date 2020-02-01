@@ -93,7 +93,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">2.2. 任务注意事项</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id6">离线标注</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">任务催促</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">任务状态</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">任务预览</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">任务打回</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">任务催促</a></li>
 </ul>
 </li>
 </ul>
@@ -183,10 +186,12 @@
 <img alt="../_images/assign-annotate.png" src="../_images/assign-annotate.png" />
 <p>标注任务指派成功之后，任务列表中的相应任务会出现相应的标注人员：</p>
 <img alt="../_images/after-assign-annotate.png" src="../_images/after-assign-annotate.png" />
-<p>同时，平台管理员具备最高权限，其可以选择 <code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 、 <code class="docutils literal notranslate"><span class="pre">提交</span></code> 文件：<strong>删除</strong> 文件不仅意味着任务取消，与之对应的构式语料文件也会被服务器删除；<strong>更新</strong> 文件则意味着平台管理员可以远程更新语料文件；<strong>提交</strong> 文件则表示平台管理员认定该任务可以进入下一阶段。</p>
+<p>同时，平台管理员具备最高权限，其可以选择 <code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 、 <code class="docutils literal notranslate"><span class="pre">提交</span></code> 、 <code class="docutils literal notranslate"><span class="pre">打回</span></code> 文件：<strong>删除</strong> 文件不仅意味着任务取消，与之对应的构式语料文件也会被服务器删除；<strong>更新</strong> 文件则意味着平台管理员可以远程更新语料文件；<strong>提交</strong> 文件则表示平台管理员认定该任务可以进入下一阶段。</p>
+<img alt="../_images/rollback.png" src="../_images/rollback.png" />
+<p>对于， <code class="docutils literal notranslate"><span class="pre">待校对</span></code> 、 <code class="docutils literal notranslate"><span class="pre">待审核</span></code> 任务，平台管理员可以选择 <strong>打回</strong> 任务，令原标注人员或原校对人员继续完善标注文件。</p>
 <div class="admonition warning">
 <p class="admonition-title">警告</p>
-<p><code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 、 <code class="docutils literal notranslate"><span class="pre">提交</span></code> 均属于不可撤回操作，平台管理员进行相应操作之前，应再三确认。</p>
+<p><code class="docutils literal notranslate"><span class="pre">删除</span></code> 、 <code class="docutils literal notranslate"><span class="pre">更新</span></code> 均属于不可撤回操作，平台管理员进行相应操作之前，应再三确认。</p>
 </div>
 <p>当标注人员完成语料标注，点击 <strong>提交</strong> 之后，相应的任务会进入下一阶段，即 <strong>校对</strong> 阶段。此时，平台管理员需要向标注人员指派校对任务——点击右上角的 <strong>指派任务</strong> 选择 <code class="docutils literal notranslate"><span class="pre">校正</span></code> ，即可批量指派校对任务：</p>
 <img alt="../_images/assign-proofread.png" src="../_images/assign-proofread.png" />
@@ -225,7 +230,33 @@
 <p>另外，需要注意的是，节点 <code class="docutils literal notranslate"><span class="pre">&lt;sentence&gt;</span></code> 具备属性 <code class="docutils literal notranslate"><span class="pre">annotated</span></code> ，其取值为 <code class="docutils literal notranslate"><span class="pre">0</span></code> 或 <code class="docutils literal notranslate"><span class="pre">1</span></code> ；而节点 <code class="docutils literal notranslate"><span class="pre">&lt;cxn&gt;</span></code> 则具备 <code class="docutils literal notranslate"><span class="pre">type</span></code> 这一基本的属性，其他属性由 <code class="docutils literal notranslate"><span class="pre">type</span></code> 决定。</p>
 </div>
 <div class="section" id="id8">
-<h3>任务催促<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<h3>任务状态<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>平台管理员可以分别任务视角和人员视角查看任务状态，前者表示平台管理员关心当前所有任务状态，后者则表示平台管理员仅希望查看某一标注人员的任务进度。针对平台所有任务，平台提供两种查看方式：总览和按类浏览，如下图所示：</p>
+<img alt="../_images/task-status-general.png" src="../_images/task-status-general.png" />
+<p>平台默认总览任务状态，可以通过点击 <strong>按类浏览</strong> 对任务状态进行分类查看。</p>
+<img alt="../_images/task-status-categorial.png" src="../_images/task-status-categorial.png" />
+<p>此外，就标注人员当前任务状态，管理员可在“管理界面”-“用户界面”通过点击标注人员昵称获取用户当前正在处理的任务，如下图所示：</p>
+<img alt="../_images/personal-task-status.png" src="../_images/personal-task-status.png" />
+</div>
+<div class="section" id="id9">
+<h3>任务预览<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>一般来说，标注人员仅仅对管理员分配的任务有相关的操作权限，比如标注、下载、更新、提交等，考虑到平台用户有预览相关文件的需求，
+平台设计了任务预览功能，并对任意权限的用户开放，如下图所示：</p>
+<img alt="../_images/task-preview.png" src="../_images/task-preview.png" />
+</div>
+<div class="section" id="id10">
+<h3>任务打回<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>平台将提交任务的权限交予标注人员，由此亦有可能存在完成度不高的问题，为此平台管理员可以视情况直接打回待校对任务和待审核任务。</p>
+<img alt="../_images/rollback.png" src="../_images/rollback.png" />
+<p>而对于校对人员而言，其同样可以选择打回任务，不过需要向管理员提交任务打回请求，交由管理员审核，</p>
+<img alt="../_images/ask-rollback.png" src="../_images/ask-rollback.png" />
+<p>在管理员审核前，不允许重复打回任务。</p>
+<img alt="../_images/after-ask-rollback.png" src="../_images/after-ask-rollback.png" />
+<p>管理员可以选择同意或拒绝打回任务请求，通过点击任务名称，查看任务详情，是否与打回理由描述相一致。</p>
+<img alt="../_images/user-messages.png" src="../_images/user-messages.png" />
+</div>
+<div class="section" id="id11">
+<h3>任务催促<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
 <p>假如平台管理员认为标注人员进度偏慢，可以通过催促功能发送邮件，对之进行催促：</p>
 <img alt="../_images/notify.png" src="../_images/notify.png" />
 <p>收到催促的标注人员则会收到相应的催促邮件：</p>
